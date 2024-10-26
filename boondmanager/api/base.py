@@ -269,7 +269,7 @@ class BaseClient:
         :param tab_name: The tab to use
         """
         self.add_header('content-type', 'application/json')
-        return self.request('GET', resource_id=resource_id, tab_name=tab_name, post_data=data)
+        return self.request('POST', resource_id=resource_id, tab_name=tab_name, post_data=data)
 
     def put(self, resource_id=None, data=None, tab_name=None):
         """
@@ -279,6 +279,7 @@ class BaseClient:
         :param data: The data to send in the request (default: None)
         :param tab_name: The tab to use (default: None)
         """
+        self.add_header('content-type', 'application/json')
         return self.request('PUT', resource_id=resource_id, post_data=data, tab_name=tab_name)
 
     def patch(self, resource_id=None, data=None, tab_name=None):
@@ -289,6 +290,7 @@ class BaseClient:
         :param data: The data to send in the request (default: None)
         :param tab_name: The tab to use (default: None)
         """
+        self.add_header('content-type', 'application/json')
         return self.request('PATCH', resource_id=resource_id, post_data=data, tab_name=tab_name)
 
     def delete(self, resource_id=None):
