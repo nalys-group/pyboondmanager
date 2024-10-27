@@ -80,7 +80,7 @@ class BaseClient:
     query_params = None
     _domain = None
 
-    def __init__(self, basic_auth=None, jwt_app=None, jwt_client=None, resource_id=None, domain=None):
+    def __init__(self, *, basic_auth=None, jwt_app=None, jwt_client=None, resource_id=None, domain=None):
         self.client = requests
         self.resource_id = resource_id
         if basic_auth:
@@ -184,7 +184,7 @@ class BaseClient:
         if self.jwt_client:
             self.headers['X-Jwt-Client-Boondmanager'] = self.jwt_client
 
-    def request(self, method, resource_id=None, post_data=None, tab_name=None, forced_uri=None):
+    def request(self, method, *, resource_id=None, post_data=None, tab_name=None, forced_uri=None):
         """
         Make a request to the API
 
@@ -199,6 +199,7 @@ class BaseClient:
         if resource_id:
             self.resource_id = resource_id
         if post_data:
+            self.add_header('content-type', 'application/json')
             self.post_data = post_data
         session = self.client.Session()
         url = self._make_url(self.resource_id, tab_name, forced_uri=forced_uri)
@@ -258,7 +259,6 @@ class BaseClient:
 
         :param data: The data to send in the request (default: None)
         """
-        self.add_header('content-type', 'application/json')
         return self.request('POST', post_data=data)
 
     def post_tab(self, resource_id, tab_name, data=None):
@@ -268,7 +268,6 @@ class BaseClient:
         :param resource_id: The id of the content to work on
         :param tab_name: The tab to use
         """
-        self.add_header('content-type', 'application/json')
         return self.request('POST', resource_id=resource_id, tab_name=tab_name, post_data=data)
 
     def put(self, resource_id=None, data=None, tab_name=None):
@@ -279,7 +278,6 @@ class BaseClient:
         :param data: The data to send in the request (default: None)
         :param tab_name: The tab to use (default: None)
         """
-        self.add_header('content-type', 'application/json')
         return self.request('PUT', resource_id=resource_id, post_data=data, tab_name=tab_name)
 
     def patch(self, resource_id=None, data=None, tab_name=None):
@@ -290,7 +288,6 @@ class BaseClient:
         :param data: The data to send in the request (default: None)
         :param tab_name: The tab to use (default: None)
         """
-        self.add_header('content-type', 'application/json')
         return self.request('PATCH', resource_id=resource_id, post_data=data, tab_name=tab_name)
 
     def delete(self, resource_id=None):
