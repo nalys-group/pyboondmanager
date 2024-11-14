@@ -47,6 +47,6 @@ class Products(DefaultEndpointMixin, BaseClient):
     >>> products_client.get_default()
     """
     allowed_methods = ['GET', 'POST', 'DELETE', 'PUT']
-    single_uri = '/products'
-    list_uri = '/products/{}'
+    list_uri = '/products'
+    single_uri = '/products/{}'
     tabs = ['rights', 'information', 'attached-flags', 'opportunities', 'projects', 'tasks']
