@@ -51,7 +51,7 @@ class Projects(BaseClient):
     >>> projects_client.delete(5)
     """
     allowed_methods = ['GET', 'POST', 'DELETE', 'PUT']
-    single_uri = '/projects'
-    list_uri = '/projects/{}'
+    list_uri = '/projects'
+    single_uri = '/projects/{}'
     tabs = ['rights', 'information', 'attached-flags', 'batches-markers', 'actions', 'simulation',
             'deliveries-groupments', 'advantages', 'purchases', 'productivity', 'orders', 'tasks']

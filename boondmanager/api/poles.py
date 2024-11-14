@@ -34,5 +34,5 @@ class Poles(BaseClient):
     >>> poles_client.delete(5)
     """
     allowed_methods = ['GET', 'POST', 'DELETE', 'PUT']
-    single_uri = '/poles'
-    list_uri = '/poles/{}'
+    list_uri = '/poles'
+    single_uri = '/poles/{}'

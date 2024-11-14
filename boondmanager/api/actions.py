@@ -44,7 +44,6 @@ class Actions(DefaultEndpointMixin, BaseClient):
     list_uri = '/actions'
     single_uri = '/actions/{}'
     tabs = ['rights', 'attached-flags']
-    list_uri = '/actions'
 
 
 class ActionsTemplates(BaseClient):

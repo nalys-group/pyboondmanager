@@ -48,6 +48,6 @@ class Invoices(DefaultEndpointMixin, BaseClient):
     >>> invoices_client.get_default()
     """
     allowed_methods = ['GET', 'POST', 'DELETE', 'PUT']
-    single_uri = '/invoices'
-    list_uri = '/invoices/{}'
+    list_uri = '/invoices'
+    single_uri = '/invoices/{}'
     tabs = ['rights', 'information', 'attached-flags', 'actions', 'download', 'send', 'tasks']

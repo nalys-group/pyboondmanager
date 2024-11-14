@@ -34,5 +34,5 @@ class SavedSearches(BaseClient):
     >>> saved_searches_client.delete(5)
     """
     allowed_methods = ['GET', 'POST', 'DELETE', 'PUT']
-    single_uri = '/savedsearches'
-    list_uri = '/savedsearches/{}'
+    list_uri = '/savedsearches'
+    single_uri = '/savedsearches/{}'
