@@ -37,7 +37,7 @@ class Forms(BaseClient):
     """
     allowed_methods = ['GET', 'PUT', 'POST', 'DELETE']
     list_uri = '/forms'
-    list_uri = '/forms/{}'
+    single_uri = '/forms/{}'
     tabs = ['remind', 'rights', 'tasks']
 
 
@@ -62,4 +62,4 @@ class FormsTemplates(BaseClient):
     """
     allowed_methods = ['GET', 'PUT', 'POST', 'DELETE']
     list_uri = '/forms/templates'
-    list_uri = '/forms/templates/{}'
+    single_uri = '/forms/templates/{}'
