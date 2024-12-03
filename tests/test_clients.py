@@ -14,6 +14,8 @@
 # pylint: disable=redefined-outer-name
 
 import json
+from unittest.mock import MagicMock
+
 import pytest
 
 from boondmanager.auth import get_jwt
@@ -43,6 +45,50 @@ def save_mock_response(response, filename):
 
 class TestBaseClient:
     """Test the base client."""
+
+    def test_client_request_headers(self, client, mocker):
+        client = BaseClient()
+        client.allowed_methods = ['GET']
+        client.jwt_client = 'mocked_jwt_token'
+        mocker.patch.object(client, '_make_url', return_value='http://test.com/resource')
+        mock_response = mocker.Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {}
+        mocker.patch.object(client, '_send', return_value=mock_response)
+        mock_request = mocker.Mock()
+        mocker.patch.object(client.client, 'Request', return_value=mock_request)
+        client.get()
+
+        assert mock_request.headers['X-Jwt-Client-Boondmanager'] == 'mocked_jwt_token'
+
+    def test_client_request_params(self, client, mocker):
+        client = BaseClient()
+        client.allowed_methods = ['GET']
+        mocker.patch.object(client, '_make_url', return_value='http://test.com/resource')
+        mock_response = mocker.Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {}
+        mocker.patch.object(client, '_send', return_value=mock_response)
+        mock_request = mocker.Mock()
+        mocker.patch.object(client.client, 'Request', return_value=mock_request)
+        query_params = {'key': 'value'}
+        client.get(params=query_params)
+        assert mock_request.params == {'key': 'value'}
+
+    def test_client_post_headers_data(self, client, mocker):
+        client = BaseClient()
+        client.allowed_methods = ['POST']
+        mocker.patch.object(client, '_make_url', return_value='http://test.com/resource')
+        mock_response = mocker.Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {}
+        mocker.patch.object(client, '_send', return_value=mock_response)
+        mock_request = mocker.Mock()
+        mocker.patch.object(client.client, 'Request', return_value=mock_request)
+        client.post({'key': 'value'})
+        assert mock_request.data['key'] == 'value'
+        assert mock_request.headers['content-type'] == 'application/json'
+
     def test_method_not_allowed(self):
         """Test that the client raises an exception when the method is not allowed."""
         client = BaseClient()
@@ -60,6 +106,7 @@ class TestBaseClient:
             mock_response.json.return_value = json.load(filer)
         mocker.patch.object(client, '_send', return_value=mock_response)
         client.request('GET')
+        assert client._send.call_count == 1
 
     def test_post(self, client, mocker):
         client = BaseClient()
