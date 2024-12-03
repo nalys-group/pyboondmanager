@@ -70,6 +70,7 @@ class BaseClient:
     auth = None
     client = None
     _domain = None
+    session = None
 
     def __init__(self, *, basic_auth=None, jwt_app=None, jwt_client=None, domain=None):
         self.client = requests
@@ -79,6 +80,7 @@ class BaseClient:
         self.jwt_app = jwt_app
         self.jwt_client = jwt_client
         self._domain = domain or BOONDMANAGER_API_URL
+        self.session = self.client.Session()
 
     def _make_url(self, resource_id=None, tab_name=None, forced_uri=None):
         """
@@ -133,7 +135,7 @@ class BaseClient:
         headers = {}
         if post_data:
             headers['content-type'] = 'application/json'
-        session = self.client.Session()
+        # session = self.client.Session()
         url = self._make_url(resource_id, tab_name, forced_uri=forced_uri)
         req = self.client.Request(method, url)
         if self.auth:
@@ -146,7 +148,7 @@ class BaseClient:
         if post_data:
             req.data = post_data
         prepped = req.prepare()
-        response = self._send(session, prepped)
+        response = self._send(self.session, prepped)
         if response.status_code == 403:
             raise BoondManagerForbidden()
         if response.status_code == 404:
